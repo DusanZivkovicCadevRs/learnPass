@@ -44,6 +44,8 @@ passport.use(new localStrategy(user.authenticate()));
 passport.serializeUser(user.serializeUser());
 passport.deserializeUser(user.deserializeUser());
 
+// app.use()
+
 app.use('/', index);
 app.use('/users', users);
 app.use('/courses', courses);
