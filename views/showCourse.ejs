@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>course</title>
+</head>
+
+<body>
+    <form action="../courses" method="get">
+        <div class="row">
+            <label for="name">Name:
+                <input disabled type="text" name="name" id="name" value="<%=foundCourse.name%>">
+            </label>
+            <label for="code">Code:
+                <input disabled type="text" name="code" id="code" value="<%=foundCourse.code%>">
+            </label>
+            <label for="name">Image:
+                <input disabled type="text" name="image" id="image" value="<%=foundCourse.image%>">
+            </label>
+            <label for="name">Description:
+                <input disabled textarea="textarea" name="description" id="" value="<%=foundCourse.description%>">
+            </label>
+
+            <button type="submit">Go back</button>
+        </div>
+        <img src="<%=foundCourse.image%>" style="width: 140px">
+    </form>
+
+</body>
+
+</html>
