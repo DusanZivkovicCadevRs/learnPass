@@ -8,6 +8,7 @@ var mongoose = require('mongoose')
 var methodOverride = require('method-override')
 var passport = require('passport');
 var localStrategy = require('passport-local');
+var flash = require('connect-flash');
 
 var user = require('./models/userSchema');
 
@@ -28,6 +29,7 @@ app.set('view engine', 'ejs');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(methodOverride('_method'));
+app.use(flash());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -44,7 +46,12 @@ passport.use(new localStrategy(user.authenticate()));
 passport.serializeUser(user.serializeUser());
 passport.deserializeUser(user.deserializeUser());
 
-// app.use()
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  res.locals.error = req.flash('error');
+  res.locals.success = req.flash('success');
+  next();
+});
 
 app.use('/', index);
 app.use('/users', users);
