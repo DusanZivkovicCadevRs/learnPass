@@ -1,14 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>course</title>
-</head>
-
-<body>
+<% include ./partials/header %>
+    <p>
+        <%=foundCourse%>
+    </p>
+    <p>
+        <%= foundCourse.students %>
+    </p>
+    <p> About students:
+        <% if(foundCourse.students.length > 0) {
+            foundCourse.students.forEach(e => {
+                %>
+            <p>
+                <%=e.data.email%>
+            </p>
+            <%
+            })
+        } else {
+            %> no enrolled students
+                <%
+        } %>
+    </p>
+    <% if(currentUser) { %>
+        <form action="/add/<%=foundCourse.id %>" method="post">
+            <input type="submit" value="Enroll">
+        </form>
+        <form action="/courses/<%=foundCourse.id%>?_method=DELETE" method="post">
+            <input type="submit" value="Delete">
+        </form>
+        <% }%>
     <form action="../courses" method="get">
         <div class="row">
             <label for="name">Name:
@@ -23,12 +41,9 @@
             <label for="name">Description:
                 <input disabled textarea="textarea" name="description" id="" value="<%=foundCourse.description%>">
             </label>
-
             <button type="submit">Go back</button>
         </div>
-        <img src="<%=foundCourse.image%>" >
+        <img src="<%=foundCourse.image%>">
     </form>
 
-</body>
-
-</html>
+            <% include ./partials/footer %>

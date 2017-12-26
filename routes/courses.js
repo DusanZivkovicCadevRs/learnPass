@@ -5,7 +5,7 @@ const Course = require('../models/courseSchema');
 router.get('/', (req, res) => {
     Course.find({}, (er, allCourses) => {
         if (er) res.send('Nema kurseva ima greska... ');
-        res.render('showAll', {allCourses: allCourses});
+        res.render('showAll', { allCourses: allCourses });
     });
 });
 
@@ -25,23 +25,26 @@ router.post('/', (req, res) => {
 
     Course.create(newCourse, (err, createdCourse) => {
         if (err) throw err;
-        res.json(createdCourse);
+        res.render('showAll');
     });
 });
 
+// show ruta kursa
 router.get('/:id', (req, res) => {
     let requestedCourseId = req.params.id;
-    Course.findById(requestedCourseId, (err, result) => {
-        if (err) throw err;
-        res.render('showCourse', {foundCourse: result})
-    });
+    Course.findById(req.params.id)
+        .populate('students.data')
+        .exec((err, result) => {
+            if (err) throw err;
+            res.render('showCourse', { foundCourse: result })
+        });
 });
 
 router.get('/:id/edit', (req, res) => {
     let requestedCourseId = req.params.id;
     Course.findById(requestedCourseId, (err, result) => {
         if (err) throw err;
-        res.render('editCourse', {foundCourse: result});
+        res.render('editCourse', { foundCourse: result });
     });
 });
 
@@ -50,10 +53,11 @@ router.get('/:id/edit', (req, res) => {
 router.put('/:id', (req, res) => {
     let updatedCourse = {
         $set: {
-        name: req.body.name,
-        code: req.body.code,
-        description: req.body.description,
-        image: req.body.image }
+            name: req.body.name,
+            code: req.body.code,
+            description: req.body.description,
+            image: req.body.image
+        }
     };
 
     Course.findByIdAndUpdate(req.params.id, updatedCourse, (err, foundCourse) => {
@@ -64,8 +68,9 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
     console.log('router delete')
-    Course.findByIdAndRemove(req.params.id, (err, result) =>{
+    Course.findById(req.params.id, (err, result) => {
         if (err) throw err;
+        result.remove();
         res.redirect('/courses');
     });
 });

@@ -12,9 +12,10 @@ var userSchema = new Schema({
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
-    kind:
+    type:
         {
             type: String,
             enum: [
@@ -24,27 +25,17 @@ var userSchema = new Schema({
             ],
             default: 'student'
         },
-    isAdmin: {
-        type: Boolean,
-        default: false
-    },
-    isPromote: {
-        type: Boolean,
-        default: false
-    },
     username: {
         type: String,
+        unique: true
     },
     password: String,
-    type: {
-        type: String,
-        enum: [
-            'a',
-            'b',
-            'c'
-        ],
-        default: 'c'
-    }
+    courses: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Course'
+        },
+    ]
 })
 
 userSchema.plugin(localPassport);

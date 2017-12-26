@@ -1,15 +1,22 @@
-<% include ./partials/header %>
+<% include ../partials/header %>
     <% foundUsers.forEach(e => { %>
         <div class="row">
-            <label for="firstName">
+            <label for="firstName">Name:
                 <input type="text" name="firstName" disabled value="<%=e.firstName%>" id="firstName">
-            </label>
+            </label>Surname:
             <label for="lastName">
                 <input type="text" name="lastName" disabled value="<%=e.lastName%>" id="firstName">
-            </label>
+            </label>User:
             <label for="username">
                 <input type="text" name="username" disabled value="<%=e.username%>" id="firstName">
             </label>
+            <label for="courses">Courses:
+                <ul>
+                    <% e.courses.forEach(el => {
+                        %><li><%=el %></li><%
+                }) %>
+                </ul>
+            </label><br><br>
         </div>
         <% }); %>
-<% include ./partials/footer %>
+            <% include ../partials/footer %>

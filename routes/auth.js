@@ -17,6 +17,7 @@ router.post('/register', (req, res) => {
     User.register(newUser, req.body.password, (err, user) => {
         if (err) throw err;
         passport.authenticate('local')(req, res, () => {
+            req.flash('success', 'uspesno registrovan');
             res.redirect('/courses');
         });
     });

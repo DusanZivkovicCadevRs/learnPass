@@ -10,6 +10,7 @@ var passport = require('passport');
 var localStrategy = require('passport-local');
 var flash = require('connect-flash');
 
+var enroll = require('./routes/enroll');
 var user = require('./models/userSchema');
 var auth = require('./routes/auth');
 var index = require('./routes/index');
@@ -59,6 +60,7 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/courses', courses);
 app.use('/auth', auth);
+app.use(enroll);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
