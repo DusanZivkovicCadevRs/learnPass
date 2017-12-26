@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MAcademy</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+        crossorigin="anonymous">
+</head>
+
+<body>
+    <!-- Nav tabs -->
+    <nav class="nav justify-content-center|justify-content-end">
+        <div class="container">
+            <ul class="nav">
+                <li>
+                    <a class="nav-link active" href="/">Home</a>
+                </li>
+                <% if(!currentUser)  { %>
+                <li>
+                    <a class="nav-link" href="/auth/register">Register</a>
+                </li>
+                <li>
+                    <a class="nav-link " href="/auth/login">Login</a>
+                </li>
+                <% } else { %> 
+                <li>
+                    <a class="nav-link " href="/auth/logout">Logout</a>
+                </li>
+                <% } %>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <% if(error && error.length > 0) { %>
+            <div class="alert alert-danger" role="alert">
+                <%= error %>
+            </div>
+            <% } %>
+                <% if(success && success.length > 0) { %>
+                    <div class="alert alert-success" role="alert">
+                        <%= success %>
+                    </div>
+                    <% } %>
+    </div>
+
+    <div class="container">

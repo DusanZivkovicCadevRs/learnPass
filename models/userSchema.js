@@ -35,7 +35,16 @@ var userSchema = new Schema({
     username: {
         type: String,
     },
-    password: String
+    password: String,
+    type: {
+        type: String,
+        enum: [
+            'a',
+            'b',
+            'c'
+        ],
+        default: 'c'
+    }
 })
 
 userSchema.plugin(localPassport);

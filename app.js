@@ -11,11 +11,13 @@ var localStrategy = require('passport-local');
 var flash = require('connect-flash');
 
 var user = require('./models/userSchema');
-
 var auth = require('./routes/auth');
 var index = require('./routes/index');
 var users = require('./routes/users');
 const courses = require('./routes/courses');
+
+mongoose.Promise = global.Promise;
+
 mongoose.connect('mongodb://localhost/my_database', {
   useMongoClient: true
 });
@@ -30,7 +32,7 @@ app.set('view engine', 'ejs');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(methodOverride('_method'));
 app.use(flash());
-app.use(logger('dev'));
+// app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());

@@ -1,3 +1,4 @@
+var mongoose = require('mongoose');
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
@@ -22,6 +23,7 @@ router.post('/register', (req, res) => {
 });
 
 router.get('/login', (req, res) => {
+    console.log(User.schema.path('type').enumValues);
     res.render('auth/login')
 });
 
@@ -29,11 +31,11 @@ router.post('/login', passport.authenticate('local', {
     successRedirect: '/courses',
     failureRedirect: '/',
     failureFlash: true
-}), (req, res) => { 
+}), (req, res) => {
 });
 
 router.get('/logout', (req, res) => {
-    if(req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
         req.logOut();
         // req.flash('success', 'Logged out');
         res.redirect('/courses');
