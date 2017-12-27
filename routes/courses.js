@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const Course = require('../models/courseSchema');
+const m = require('../middlewares/middleware');
 
+// show all courses
 router.get('/', (req, res) => {
     Course.find({}, (er, allCourses) => {
         if (er) res.send('Nema kurseva ima greska... ');
@@ -9,23 +11,25 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/new', (req, res) => {
+// go to newly created course
+router.get('/new', m.isTeacher, (req, res) => {
     res.render('newCourse');
 })
 
-router.post('/', (req, res) => {
+// make new course
+router.post('/', m.isTeacher, (req, res) => {
+    req.body.teacher = req.user._id;
     let newCourse = {
         name: req.body.name,
         code: req.body.code,
         description: req.body.description,
-        image: req.body.image
+        image: req.body.image,
+        teacher: req.body.teacher
     };
-
     if (!newCourse.image) delete newCourse.image;
-
     Course.create(newCourse, (err, createdCourse) => {
         if (err) throw err;
-        res.render('showAll');
+        res.render('showCourse', { foundCourse: createdCourse });
     });
 });
 
@@ -40,7 +44,8 @@ router.get('/:id', (req, res) => {
         });
 });
 
-router.get('/:id/edit', (req, res) => {
+// edit this
+router.get('/:id/edit', m.checkCourseOwnership, (req, res) => {
     let requestedCourseId = req.params.id;
     Course.findById(requestedCourseId, (err, result) => {
         if (err) throw err;
@@ -48,9 +53,8 @@ router.get('/:id/edit', (req, res) => {
     });
 });
 
-
-
-router.put('/:id', (req, res) => {
+// update
+router.put('/:id', m.checkCourseOwnership, (req, res) => {
     let updatedCourse = {
         $set: {
             name: req.body.name,
@@ -66,7 +70,7 @@ router.put('/:id', (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', m.checkCourseOwnership, (req, res) => {
     console.log('router delete')
     Course.findById(req.params.id, (err, result) => {
         if (err) throw err;

@@ -30,7 +30,12 @@ var courseSchema = new Schema({
 });
 
 courseSchema.pre('remove', function (next) {
-    this.model('User').update({ courses: this._id }, { $pull: { courses: this._id } }, { multi: true }).exec();
+    this.model('User')
+        .update(
+        { courses: this._id },
+        { $pull: { courses: this._id } },
+        { multi: true })
+        .exec();
     next();
 });
 

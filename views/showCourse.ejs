@@ -19,14 +19,31 @@
                 <%
         } %>
     </p>
-    <% if(currentUser) { %>
-        <form action="/add/<%=foundCourse.id %>" method="post">
-            <input type="submit" value="Enroll">
-        </form>
-        <form action="/courses/<%=foundCourse.id%>?_method=DELETE" method="post">
-            <input type="submit" value="Delete">
-        </form>
-        <% }%>
+    <div class="row">
+        <% if(currentUser) { 
+            var showUnroll = false;
+            var showEnroll = true; 
+            foundCourse.students.forEach(e => {
+                if(e.data._id == currentUser.id) {
+                    showEnroll = false;
+                    showUnroll = true;
+                }
+            })
+            %>
+            <% if(showEnroll) { %> 
+            <form action="/add/<%=foundCourse.id %>" method="post">
+                <input type="submit" value="Enroll">
+            </form><%} %>
+            <% if(showUnroll) { %> 
+            <form action="/unroll/<%=foundCourse.id%>" method="post">
+                <input type="submit" value="Unroll">
+            </form><% } %>
+            <% if(currentUser.type == 'teacher') { %>  
+            <form action="/courses/<%=foundCourse.id%>?_method=DELETE" method="post">
+                <input type="submit" value="Delete">
+            </form><% } %>
+            <% }%>
+    </div>
     <form action="../courses" method="get">
         <div class="row">
             <label for="name">Name:
@@ -46,4 +63,4 @@
         <img src="<%=foundCourse.image%>">
     </form>
 
-            <% include ./partials/footer %>
+    <% include ./partials/footer %>

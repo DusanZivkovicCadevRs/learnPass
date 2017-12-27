@@ -24,7 +24,6 @@ router.post('/register', (req, res) => {
 });
 
 router.get('/login', (req, res) => {
-    console.log(User.schema.path('type').enumValues);
     res.render('auth/login')
 });
 
