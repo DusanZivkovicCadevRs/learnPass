@@ -1,22 +1,42 @@
 <% include ../partials/header %>
-    <% foundUsers.forEach(e => { %>
-        <div class="row">
+
+    <div class="row">
+        <form action="/users/<%=foundUser.id %>?_method=put" method="post">
             <label for="firstName">Name:
-                <input type="text" name="firstName" disabled value="<%=e.firstName%>" id="firstName">
+                <input type="text" name="firstName" disabled value="<%=foundUser.firstName%>" id="firstName">
             </label>Surname:
             <label for="lastName">
-                <input type="text" name="lastName" disabled value="<%=e.lastName%>" id="firstName">
+                <input type="text" name="lastName" disabled value="<%=foundUser.lastName%>" id="firstName">
             </label>User:
             <label for="username">
-                <input type="text" name="username" disabled value="<%=e.username%>" id="firstName">
+                <input type="text" name="username" disabled value="<%=foundUser.username%>" id="firstName">
             </label>
             <label for="courses">Courses:
                 <ul>
-                    <% e.courses.forEach(el => {
-                        %><li><%=el %></li><%
-                }) %>
+                    <% foundUser.courses.forEach(el => {
+                    %>
+                        <li>
+                            <%=el %>
+                        </li>
+                        <%
+            }) %>
                 </ul>
-            </label><br><br>
-        </div>
-        <% }); %>
-            <% include ../partials/footer %>
+                <label>enroll in new courses:
+                    <div class="input-group">
+                        <!-- ovde svaki kurs da se check / uncheck -->
+                        
+                        <span class="input-group-addon">
+                            <input type="checkbox" name="name" id="name">
+                        </span>
+                    </div>
+                </label>
+                <input type="submit" value="Change">
+                <a href="">
+                    <button type="submit">Delete</button>
+                </a>
+            </label>
+            <br>
+            <br>
+        </form>
+    </div>
+    <% include ../partials/footer %>

@@ -1,13 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const Course = require('../models/courseSchema');
+const Carousel = require('../models/caruselSchema');
 const m = require('../middlewares/middleware');
 
 // show all courses
 router.get('/', (req, res) => {
     Course.find({}, (er, allCourses) => {
-        if (er) res.send('Nema kurseva ima greska... ');
-        res.render('showAll', { allCourses: allCourses });
+        if (er) throw er
+        Carousel.find({}, (err, allCarousels) => {
+            if (err) res.send('Nema kurseva ima greska... ');
+            res.render('showAll', { allCourses: allCourses, allCarousels: allCarousels});
+        })
     });
 });
 
@@ -55,12 +59,10 @@ router.get('/:id/edit', m.checkCourseOwnership, (req, res) => {
 
 // update
 router.put('/:id', m.checkCourseOwnership, (req, res) => {
+
     let updatedCourse = {
         $set: {
-            name: req.body.name,
-            code: req.body.code,
-            description: req.body.description,
-            image: req.body.image
+            teacher: req.body.newTeacher
         }
     };
 

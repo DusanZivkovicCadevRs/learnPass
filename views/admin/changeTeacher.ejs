@@ -1,4 +1,4 @@
-<% include ./partials/header %>
+<% include ../partials/header %>
     <p>
         <%=foundCourse%>
     </p>
@@ -20,31 +20,9 @@
         } %>
     </p>
     <div class="row">
-        <% if(currentUser) { 
-            var showUnroll = false;
-            var showEnroll = true; 
-            foundCourse.students.forEach(e => {
-                if(e.data._id == currentUser.id) {
-                    showEnroll = false;
-                    showUnroll = true;
-                }
-            })
-            %>
-            <%// if(showEnroll) { %> 
-            <form action="/add/<%=foundCourse.id %>" method="post">
-                <input type="submit" value="Enroll">
-            </form><%//} %>
-            <%// if(showUnroll) { %>
-            <form action="/unroll/<%=foundCourse.id%>" method="post">
-                <input type="submit" value="Unroll">
-            </form><%// } %>
-            <% //if(currentUser.type == 'teacher' || currentUser.type == 'admin') { %>  
-            <form action="/courses/<%=foundCourse.id%>?_method=DELETE" method="post">
-                <input type="submit" value="Delete">
-            </form><%// } %>
-            <% }%>
+
     </div>
-    <form action="../courses" method="get">
+    <form action="/courses/<%=foundCourse._id%>?_method=PUT" method="post">
         <div class="row">
             <label for="name">Name:
                 <input disabled type="text" name="name" id="name" value="<%=foundCourse.name%>">
@@ -58,9 +36,33 @@
             <label for="name">Description:
                 <input disabled textarea="textarea" name="description" id="" value="<%=foundCourse.description%>">
             </label>
+                <br>
+            <label for="name">Current teacher
+                <input disabled textarea="textarea" 
+                name="oldTeacher" 
+                id="" 
+                value="<%=foundCourse.teacher%>">
+            </label><br>
+            <% 
+            if(foundTeachers.length > 0) {
+                %><div class="form-group">
+                  <label for="newTeacher">New Teacher:</label>
+                  <select class="form-control" name="newTeacher" id="newTeacher">
+                      <%
+                      foundTeachers.forEach(teacher => {
+                          %>
+                          <option value="<%=teacher._id%>"</option><%=('username: ' + teacher.username + ', id:' +  teacher.id) %></option>
+                          <%
+                      })
+                      %>
+                  </select>
+                </div> <%
+            }
+            %>
+            <input type="submit" value="Submit">
             <button type="submit">Go back</button>
         </div>
         <img src="<%=foundCourse.image%>">
     </form>
 
-    <% include ./partials/footer %>
+    <% include ../partials/footer %>

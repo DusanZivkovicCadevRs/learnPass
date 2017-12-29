@@ -9,13 +9,17 @@ var methodOverride = require('method-override')
 var passport = require('passport');
 var localStrategy = require('passport-local');
 var flash = require('connect-flash');
+var busboy = require('connect-busboy');
+var fs = require('fs');
 
 var enroll = require('./routes/enroll');
 var user = require('./models/userSchema');
 var auth = require('./routes/auth');
 var index = require('./routes/index');
 var users = require('./routes/users');
-const courses = require('./routes/courses');
+var courses = require('./routes/courses');
+var carousel = require('./routes/carousel');
+var admin = require('./routes/admin');
 
 mongoose.Promise = global.Promise;
 
@@ -31,6 +35,7 @@ app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use('/uploads', express.static(path.join(__dirname, './uploads')));
 app.use(methodOverride('_method'));
 app.use(flash());
 // app.use(logger('dev'));
@@ -56,11 +61,26 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/admin', admin);
 app.use('/', index);
 app.use('/users', users);
 app.use('/courses', courses);
 app.use('/auth', auth);
 app.use(enroll);
+app.use('/carousel', carousel);
+app.use(busboy());
+
+app.post('/carousel/upload',
+  function (req, res) {
+    req.pipe(req.busboy);
+    req.busboy.on('file', function (fieldname, file, filename) {
+      var fstream = fs.createWriteStream('./content/' + filename);
+      file.pipe(fstream);
+      fstream.on('close', function () {
+        res.send('upload succeeded!');
+      });
+    });
+  });
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

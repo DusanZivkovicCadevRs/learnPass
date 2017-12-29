@@ -38,7 +38,7 @@ m.isAdmin = (req, res, next) => {
 
 m.isTeacher = (req, res, next) => {
     if (req.isAuthenticated()) {
-        if (req.user.type == 'teacher')
+        if (req.user.type == 'teacher' || req.user.type == 'admin')
             return next();
         else res.redirect('back');
     } else {
@@ -66,6 +66,34 @@ m.checkCourseOwnership = (req, res, next) => {
         req.flash('error', 'nisi ni logovan...');
         res.redirect('/auth/login');
     }
+}
+
+m.checkUserOwnership = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        User.findById(req.params.id, (err, foundUser) => {
+            if (err || !foundUser) {
+                req.flash('error', 'Nema takvog korisnika');
+                res.redirect('/');
+            } else {
+                if (foundUser.id == req.user.id || req.user.type == 'admin') {
+                    return next();
+                }
+            }
+        })
+    } else {
+        req.flash('error', 'nisi logovan...');
+        res.redirect('/auth/login');
+    }
+};
+
+m.checkIfEnrolled = (req, res, next) => {
+    Course.findById(req.params.id, (err, foundCourse) => {
+        if (err) throw err;
+        User.findById(req.user.id, (err, foundCourse) => {
+            if (err) throw err;
+
+        })
+    })
 }
 
 module.exports = m;

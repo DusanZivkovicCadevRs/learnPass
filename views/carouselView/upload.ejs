@@ -1,0 +1,12 @@
+<% include ../partials/header %>
+    <form id="myForm" name="myFarm" action="/carousel/uploadFile" enctype="multipart/form-data" method="POST">
+        <label for="picture">Link to picture</label>
+        <input type="file" id="myFile" name="myFile">
+        <br />
+        <label for="link">External link</label>
+        <input type="text" name="link">
+        <br>
+        <input type="submit" value="Submit">
+        <input type="reset" value="Reset"> 
+    </form>
+    <% include ../partials/footer %>

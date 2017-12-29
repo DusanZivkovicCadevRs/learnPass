@@ -31,7 +31,10 @@
                 <li>
                     <a class="nav-link " href="/auth/logout">Logout</a>
                 </li>
-                <% } %>
+                <% if(currentUser.type == 'admin') %>
+                <li>
+                    <a class="nav-link " href="/admin/courses">Admin</a>
+                </li><% } %>
             </ul>
         </div>
     </nav>

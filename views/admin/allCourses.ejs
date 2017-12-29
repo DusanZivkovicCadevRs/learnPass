@@ -1,22 +1,5 @@
-<% include ./partials/header %>
+<% include ../partials/header %>
 
-<% if(allCarousels.length > 0) {
-
-} %>
-    <div class="row" style="padding-left: 50px;">
-
-    </div>
-    <div class="row" style="padding-left: 50px;">
-        <% if (currentUser) {
-            %>
-            <a href="/auth/logout">
-                <button type="reset">logout</button>
-            </a>
-            <h4>Hello
-                <%=currentUser %>
-            </h4>
-            <% } %>
-    </div>
     <div class="row">
         <div class="col-md-3">Name</div>
         <a href="/courses/new">Create new course</a>
@@ -30,9 +13,11 @@
                     <%=e.name%>
                 </a>
                 <a href="/courses/<%=e.id%>/edit">&nbspedit</a>
+                <a href="/admin/teacher/<%=e.id%>">&nbspteacher</a>
+                <a href="/admin/courses/delete/<%=e.id%>">&nbspdelete</a>
             </div>
             <%
             }) %>
     </div>
 
-    <% include ./partials/footer %>
+    <% include ../partials/footer %>
